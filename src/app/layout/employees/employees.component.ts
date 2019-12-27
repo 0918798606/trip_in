@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from './shared/employee.service';
+import { DataTableDirective } from 'angular-datatables';
 @Component({
   selector: 'app-employees',
   templateUrl: './employees.component.html',
@@ -7,10 +8,9 @@ import { EmployeeService } from './shared/employee.service';
   providers : [EmployeeService]
 })
 export class EmployeesComponent implements OnInit {
-buttons = [
-  {class:'btn-secondary',icon:'fa fa-eye'}
-]
-  constructor(private employeeService : EmployeeService) { }
+
+
+  constructor(private employeeService: EmployeeService) { }
 
   ngOnInit() {
   }

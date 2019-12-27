@@ -1,4 +1,4 @@
-  import { Component, OnInit, ViewChild} from '@angular/core';
+  import { AfterViewInit, Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
   import { EmployeeService } from '../shared/employee.service';
   import {Employee} from '../shared/employee.model';
   import {ToastrService } from 'ngx-toastr';
@@ -12,26 +12,17 @@
 })
 
 export class EmployeeListComponent implements  OnInit {
-buttons = [{class: 'btn-secondary', icon: 'fa fa-eye'}];
-  employeeList: Employee[];
-  @ViewChild(DataTableDirective, {static : false})
-  dtElement: DataTableDirective;
-  dtInstance: Promise<DataTables.Api>;
 
-  // dtOptions: DataTables.Settings = {};
+  employeeList: Employee[];
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
 
   constructor(private employeeService: EmployeeService, private toastr: ToastrService) { }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
 
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-   }
+
 
   onEdit(emp: Employee) {
     this.employeeService.selectedEmployee = Object.assign({}, emp);
@@ -42,7 +33,22 @@ buttons = [{class: 'btn-secondary', icon: 'fa fa-eye'}];
     this.toastr.warning('Delated Successfully', 'Employee register');
   }
   }
+ // ngAfterViewInit(): void {
+   // this.dtTrigger.next();
+  // }
 
+ // ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    // this.dtTrigger.unsubscribe();
+  // }
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+
+    });
+   }
   ngOnInit() {
 
 
@@ -62,5 +68,6 @@ buttons = [{class: 'btn-secondary', icon: 'fa fa-eye'}];
 
 
   }
+
 
 }
