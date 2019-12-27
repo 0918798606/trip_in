@@ -7,7 +7,9 @@ import { EmployeeService } from './shared/employee.service';
   providers : [EmployeeService]
 })
 export class EmployeesComponent implements OnInit {
-
+buttons = [
+  {class:'btn-secondary',icon:'fa fa-eye'}
+]
   constructor(private employeeService : EmployeeService) { }
 
   ngOnInit() {

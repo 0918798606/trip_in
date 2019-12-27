@@ -11,6 +11,7 @@ import { EmployeesComponent } from './employees/employees.component';
 import { EmployeeComponent } from './employees/employee/employee.component';
 import { EmployeeListComponent } from './employees/employee-list/employee-list.component';
 import { DataTablesModule } from 'angular-datatables';
+
 @NgModule({
     imports: [
         CommonModule,

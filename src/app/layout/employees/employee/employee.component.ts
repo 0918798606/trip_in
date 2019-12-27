@@ -10,24 +10,26 @@ import {ToastrService } from 'ngx-toastr';
 })
 export class EmployeeComponent implements OnInit {
 
-  constructor(private employeeService : EmployeeService,private toastr : ToastrService) { }
+  constructor(private employeeService: EmployeeService, private toastr: ToastrService) { }
 
   ngOnInit() {
 
     this.resetForm();
   }
-onSubmit(employeeForm : NgForm){
-  if(employeeForm.value.$key == null)
+onSubmit(employeeForm: NgForm) {
+  if (employeeForm.value.$key == null) {
   this.employeeService.insertEmployee(employeeForm.value);
-  else
+  } else {
   this.employeeService.updateEmployee(employeeForm.value);
+  }
   this.resetForm(employeeForm);
   this.toastr.success('Registered Successfully', 'Employee Register');
 
 }
-resetForm(employeeForm? : NgForm){
-  if (employeeForm != null)
+resetForm(employeeForm?: NgForm) {
+  if (employeeForm != null) {
    employeeForm.reset();
+  }
   this.employeeService.selectedEmployee = {
     $key :  null,
     Firstname : '',
@@ -35,6 +37,6 @@ resetForm(employeeForm? : NgForm){
     Username : '',
     Gender : '',
     Email: ''
-  }
+  };
 }
 }

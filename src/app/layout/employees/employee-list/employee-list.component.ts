@@ -1,35 +1,37 @@
-  import { Component, OnInit, ViewChild } from '@angular/core';
+  import { Component, OnInit, ViewChild} from '@angular/core';
   import { EmployeeService } from '../shared/employee.service';
   import {Employee} from '../shared/employee.model';
   import {ToastrService } from 'ngx-toastr';
   import { DataTableDirective } from 'angular-datatables';
   import {Subject} from 'rxjs';
+
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss']
 })
 
-export class EmployeeListComponent implements OnInit {
-
+export class EmployeeListComponent implements  OnInit {
+buttons = [{class: 'btn-secondary', icon: 'fa fa-eye'}];
   employeeList: Employee[];
-@ViewChild(DataTableDirective, {static : false})
+  @ViewChild(DataTableDirective, {static : false})
   dtElement: DataTableDirective;
-  isDtInitialized:boolean = false
-  dtOptions: DataTables.Settings = {};
+  dtInstance: Promise<DataTables.Api>;
 
+  // dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
 
   constructor(private employeeService: EmployeeService, private toastr: ToastrService) { }
 
   rerender(): void {
-  this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  // Destroy the table first
-  dtInstance.destroy();
-  // Call the dtTrigger to rerender again
-  this.dtTrigger.next();
-  });
-  }
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+   }
 
   onEdit(emp: Employee) {
     this.employeeService.selectedEmployee = Object.assign({}, emp);
@@ -42,6 +44,9 @@ export class EmployeeListComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+
     const x = this.employeeService.getData();
     x.snapshotChanges().subscribe(item => {
       this.employeeList = [];
@@ -49,9 +54,13 @@ export class EmployeeListComponent implements OnInit {
        const y = element.payload.toJSON();
        y['$key'] = element.key;
        this.employeeList.push(y as Employee);
-      });
-      this.dtTrigger.next();
-    });
+       this.dtTrigger.next();
+     });
+
+
+   });
+
+
   }
 
 }
